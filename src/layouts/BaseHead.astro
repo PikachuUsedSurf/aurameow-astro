@@ -1,14 +1,28 @@
 ---
+// Everything between the two "---" fences is the "frontmatter" — it runs
+// once, on the server, while the page is being built. It's just JavaScript/
+// TypeScript, and its whole job is to prepare data for the HTML below.
+// Nothing in this block ever runs in the visitor's browser.
+import { ViewTransitions } from 'astro:transitions';
+
+// This declares what "props" (inputs) this component accepts when another
+// file uses it, e.g. <BaseHead title="My Page" />. The "?" makes each one
+// optional. Think of it like a function's parameter list.
 interface Props {
   title?: string;
   description?: string;
 }
 
+// Astro.props holds whatever the calling page actually passed in. The
+// " = 'Aurameow'" part is a fallback used only when that prop was omitted.
 const {
   title = 'Aurameow',
   description = 'Aurameow resume',
 } = Astro.props;
 ---
+{/* Everything below the second "---" is plain HTML (with the occasional
+    {curlyBraceExpression} that inserts a JS value, like {title} below).
+    This block becomes the <head> contents of every page that uses it. */}
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -33,3 +47,9 @@ const {
 <link rel="stylesheet" type="text/css" href="/css/fonts/fontello/css/fontello.css" />
 <link rel="stylesheet" type="text/css" href="/css/main.css" />
 <link rel="stylesheet" type="text/css" href="/css/768.css" />
+
+<!-- Client-side router: keeps the document alive across "page" navigations
+     (fetch + DOM swap instead of a real browser navigation) so persisted
+     elements like the background music keep playing, and the browser has
+     no reason to force-exit fullscreen. -->
+<ViewTransitions />

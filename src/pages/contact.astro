@@ -1,4 +1,6 @@
 ---
+// The Contact page. No data arrays to map over here — just the form
+// markup below, wired up by src/scripts/contact.ts.
 import PageLayout from '../layouts/PageLayout.astro';
 ---
 
@@ -22,7 +24,7 @@ import PageLayout from '../layouts/PageLayout.astro';
       <div class="col-xs-6 col-sm-3">
         <div class="fun-fact">
           <img src="/images/site/icon-mail.svg" alt="image" />
-          <h4>nanayaw @ skiff.com</h4>
+          <h4>nanaosafokissi@gmail.com</h4>
         </div>
       </div>
 
@@ -62,6 +64,9 @@ import PageLayout from '../layouts/PageLayout.astro';
         <input placeholder="Email" type="text" name="email" id="email" class="required email" />
       </p>
 
+      {/* This is the "honeypot" contact.ts checks — real visitors never
+          see or fill this in (CSS hides it), but simple spam bots that
+          blindly fill out every field usually do. */}
       <p class="antispam">
         Leave this empty if you are a human :
         <br /><input name="url" />

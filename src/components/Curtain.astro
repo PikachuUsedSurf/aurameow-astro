@@ -1,15 +1,20 @@
 {/*
   The black/blue page-transition curtain from the original one-page-layout
-  AJAX system. Reuses the .overlay / .overlay-1 / .overlay-2 rules already
-  defined in main.css (color, position, base transition) — this component
-  only adds the cover/reveal state classes that drive them.
+  AJAX system. This component is just two <div>s (below) — all the actual
+  animation logic lives in two other files that work together with it:
+    - CSS classes below control what "covered" vs "revealed" look like.
+    - src/scripts/transitions.ts decides WHEN to switch between them,
+      timed against Astro's page-navigation events.
+
+  How the two overlay divs create the wipe effect:
+    overlay-1 is solid black, overlay-2 is solid blue, both are full-screen
+    and stacked on top of each other with a tiny timing offset (the
+    `transition-delay` values below). Sliding both off-screen with that
+    stagger is what makes it read as one solid color "handing off" to the
+    other, rather than two flat color swaps.
 
   Every page starts "covered" (rendered server-side, so there's no flash of
   uncovered content before JS runs), then wipes away shortly after load.
-  transitions.ts intercepts internal link clicks to wipe back in before
-  navigating to the next page, so every navigation gets the same wipe
-  in/out feel the original AJAX router had — just across real page loads
-  instead of injected fragments.
 */}
 <div class="curtain curtain-cover curtain-instant">
   <div class="overlay overlay-1"></div>
@@ -17,6 +22,8 @@
 </div>
 
 <style>
+  /* "covered" state: both overlays sit at their natural position (0%),
+     fully hiding the page underneath. */
   .curtain-cover .overlay-1 {
     transform: translateY(0%);
     transition-delay: 0s;
@@ -25,6 +32,10 @@
     transform: translateY(0%);
     transition-delay: 0.15s;
   }
+  /* "revealed" state: both overlays slide fully off-screen (100% of their
+     own height, downward). The staggered transition-delay above is what
+     makes overlay-1 (black) start moving a beat before overlay-2 (blue)
+     catches up and finishes the wipe. */
   .curtain-reveal .overlay-1 {
     transform: translateY(100%);
     transition-delay: 0.15s;
@@ -33,8 +44,25 @@
     transform: translateY(100%);
     transition-delay: 0s;
   }
+  /* Used only on the very first paint of a page: skips the animation
+     entirely (transition-duration: 0) so the curtain just *appears*
+     already covering, instead of visibly sliding in from nowhere. */
   .curtain-instant .overlay {
     transition-duration: 0s !important;
     transition-delay: 0s !important;
+  }
+</style>
+
+<style is:global>
+  /* This curtain is the only visual transition we want — Astro's client
+     router (astro:transitions) otherwise applies its own default crossfade
+     via the View Transition API, which fights our manual cover/reveal
+     timing and can leave a stale snapshot on screen. Turning the browser's
+     own root transition into a no-op animation leaves 100% of the visual
+     handoff to the curtain. */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
   }
 </style>

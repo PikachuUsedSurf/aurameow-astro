@@ -1,4 +1,7 @@
 ---
+// The Resume page. Same `.map()` pattern as about.astro for turning a
+// plain array of data into repeated HTML — see that file's SERVICES
+// section for a step-by-step explanation if this looks unfamiliar.
 import PageLayout from '../layouts/PageLayout.astro';
 
 const designSkills = [
@@ -79,6 +82,11 @@ const codingSkills = [
         <h2><i>Design Skills</i></h2>
       </div>
 
+      {/* The skill bar's fill width is set directly from `s.percent` right
+          here (`width:${s.percent}%`), computed once when the page is
+          built — not filled in later by JavaScript. That means the bars
+          show at the right width immediately, even before any script has
+          run, and still work if JS is disabled entirely. */}
       {designSkills.map((s) => (
         <div class="skill-unit">
           <h4>{s.name}</h4>

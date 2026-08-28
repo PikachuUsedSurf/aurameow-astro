@@ -1,15 +1,28 @@
 ---
+// One card in the /projects grid — this file doesn't know or care how many
+// posts exist; src/pages/projects/index.astro loops over every post and
+// renders one <ProjectCard> per post, passing in that post's data as props.
+//
+// `<Image>` is Astro's built-in component for pictures: it automatically
+// resizes/optimizes the file at build time (that's why it needs explicit
+// width/height) instead of shipping the original, possibly-huge image.
 import { Image } from 'astro:assets';
+// `CollectionEntry<'projects'>` is a TypeScript type Astro generates for
+// you, describing exactly what one entry from the "projects" content
+// collection looks like (see src/content/config.ts for the actual shape).
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
   entry: CollectionEntry<'projects'>;
-  readTime: number;
+  readTime: number; // computed by the calling page — see index.astro
 }
 
 const { entry, readTime } = Astro.props;
+// `entry.data` holds everything from that post's frontmatter block.
 const { title, excerpt, category, pubDate, cover, coverAlt } = entry.data;
 
+// pubDate is stored as a JS Date; this formats it as e.g. "Aug 28, 2026"
+// for display.
 const formattedDate = pubDate.toLocaleDateString('en-US', {
   month: 'short',
   day: 'numeric',
@@ -17,9 +30,16 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
 });
 ---
 
+{/* `entry.slug` is the post's filename without ".md" — e.g. the file
+    hello-projects.md has the slug "hello-projects", so this card links to
+    /projects/hello-projects. */}
 <a class="project-card" href={`/projects/${entry.slug}`}>
   <div class="project-card-media">
     {
+      // Ternary: "cover ? doThis : doThatInstead" — if this post's
+      // frontmatter included a `cover` image, show it; otherwise fall
+      // back to a plain colored panel with the category name, so a post
+      // without a photo never looks like a broken image.
       cover ? (
         <Image src={cover} alt={coverAlt ?? ''} width={640} height={420} />
       ) : (

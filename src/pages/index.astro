@@ -1,4 +1,10 @@
 ---
+// The home page — Astro treats every file in src/pages/ as its own route,
+// matched by filename: this file (index.astro) is "/", about.astro is
+// "/about", and so on. Unlike the other pages, home doesn't use
+// PageLayout.astro — it has its own full <html> structure below, because
+// its header/nav/animated intro is completely different from the plain
+// "close button + content" look every other page shares.
 import BaseHead from '../layouts/BaseHead.astro';
 import Curtain from '../components/Curtain.astro';
 ---
@@ -96,6 +102,11 @@ import Curtain from '../components/Curtain.astro';
       </div>
       <!-- FULL SCREEN TOGGLE -->
 
+      {/* Heads up: this popup isn't wired to any script yet — it's markup
+          carried over from the original theme, but nothing currently shows
+          it or handles the Yeah!/Nope clicks. The real music on/off control
+          is the "play-music" toggle just below, run by home.ts. Leaving
+          this here as-is unless you want it built out or removed. */}
       <!-- REMOVE THIS MARKUP TO DISABLE BG AUDIO -->
       <div class="bg-music-confirm">
         <p>Autoplay Music?</p>
@@ -116,7 +127,7 @@ import Curtain from '../components/Curtain.astro';
         </div>
       </div>
 
-      <audio id="bg-music" loop src="/audio/music2.mp3"></audio>
+      <audio id="bg-music" loop src="/audio/music2.mp3" transition:persist="bg-music"></audio>
       <!-- HOME BG MUSIC -->
       <!-- REMOVE THIS MARKUP TO DISABLE BG AUDIO -->
     </div>
@@ -124,7 +135,11 @@ import Curtain from '../components/Curtain.astro';
 
     <Curtain />
 
-    <!-- SCRIPTS -->
+    {/* main.ts = shared behaviour every page needs; home.ts = only the
+        home page's animation/music-toggle/fullscreen; transitions.ts =
+        the curtain wipe. All three run again on every navigation back to
+        this page — see the astro:page-load comment near the bottom of
+        each of those files for why. */}
     <script src="../scripts/main.ts"></script>
     <script src="../scripts/home.ts"></script>
     <script src="../scripts/transitions.ts"></script>

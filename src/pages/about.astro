@@ -1,4 +1,15 @@
 ---
+// The About page. Like every page that isn't home, this wraps its content
+// in PageLayout (see src/layouts/PageLayout.astro) and only needs to
+// supply the page title + whatever goes inside — no repeated <html>/
+// header/close-button markup.
+//
+// The four arrays below are just plain data — editing "TITLE:" text or
+// adding/removing an item here is enough; you don't need to touch any
+// HTML to change what shows up. Below, each array gets turned into HTML
+// with `.map(...)`, a pattern you'll see repeated a few times on this
+// page: for every item in the list, return one chunk of HTML for it. See
+// the SERVICES section below for the first, most-commented example.
 import PageLayout from '../layouts/PageLayout.astro';
 
 const services = [
@@ -53,6 +64,12 @@ const funFacts = [
   </div>
 
   <div class="row">
+    {/* services.map(...) runs the function once per item in the `services`
+        array above, and the HTML each call returns is what ends up on the
+        page — so this one block of markup produces all 4 service cards,
+        one per entry in that array. `s` is just the current item each
+        time (its icon/title/text). To add a 5th card, add a 5th object to
+        the `services` array — you don't need to copy this HTML at all. */}
     {services.map((s) => (
       <div class="col-sm-6 col-lg-3">
         <div class="service">

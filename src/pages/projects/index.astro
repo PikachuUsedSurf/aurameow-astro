@@ -1,13 +1,32 @@
 ---
+// The /projects listing page — a grid of every post in src/content/projects/.
+// getCollection is Astro's built-in way to read a whole content collection;
+// this is the piece that turns "a folder of markdown files" into "a page
+// showing all of them", so this file is worth reading alongside
+// src/content/config.ts (defines what a post looks like) and
+// src/components/ProjectCard.astro (renders one).
 import { getCollection } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
 
-const WORDS_PER_MINUTE = 200;
+const WORDS_PER_MINUTE = 200; // rough average — used below to estimate read time
 
+// getCollection('projects', ...) reads every .md file in
+// src/content/projects/. The second argument is a filter function: return
+// true to keep an entry, false to skip it — here, that means "skip
+// anything marked draft: true in its frontmatter".
 const allEntries = await getCollection('projects', ({ data }) => !data.draft);
+
+// .sort() reorders the array in place. `b.data.pubDate.valueOf() -
+// a.data.pubDate.valueOf()` is a common trick for "sort dates newest
+// first" — .valueOf() turns a Date into a plain number (milliseconds),
+// and putting `b` before `a` reverses the usual smallest-first order.
 const entries = allEntries.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
+// Builds a lookup table of "post slug → estimated minutes to read", by
+// counting words in the post's raw markdown body and dividing by a typical
+// reading speed. A Map is just a key/value store, similar to a plain
+// object but built for exactly this kind of lookup-by-key use.
 const readTimes = new Map(
   entries.map((entry) => [
     entry.slug,
@@ -23,11 +42,18 @@ const readTimes = new Map(
   </p>
 
   {
+    // Ternary again (see ProjectCard.astro for the same pattern): if there
+    // are no published posts, show a friendly message instead of an empty
+    // grid. Otherwise, render one <ProjectCard> per entry.
     entries.length === 0 ? (
       <p>Nothing published yet — check back soon.</p>
     ) : (
       <div class="projects-grid">
         {entries.map((entry) => (
+          // The "!" after .get(...) tells TypeScript "trust me, this will
+          // never be undefined" — safe here because readTimes was built
+          // from this exact same `entries` array above, so every slug is
+          // guaranteed to already be in the map.
           <ProjectCard entry={entry} readTime={readTimes.get(entry.slug)!} />
         ))}
       </div>

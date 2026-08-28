@@ -1,11 +1,16 @@
 ---
+// This is a "layout" — a reusable page shell. Every inner page (about.astro,
+// resume.astro, contact.astro, 404.astro, and the projects pages) wraps its
+// own content in <PageLayout> instead of repeating this <html>/<head>/<body>
+// boilerplate five times. See any of those files for what that looks like
+// from the calling side — it's short, because all of THIS is shared.
 import BaseHead from './BaseHead.astro';
 import Curtain from '../components/Curtain.astro';
 
 interface Props {
   title?: string;
   description?: string;
-  pageTitle: string;
+  pageTitle: string; // required (no "?") — every page must supply its own <h1> text
 }
 
 const { title = 'Aurameow', description = 'Aurameow resume', pageTitle } = Astro.props;
@@ -17,9 +22,10 @@ const { title = 'Aurameow', description = 'Aurameow resume', pageTitle } = Astro
   white background, a floating black "X" (`.close-page`) fixed at top-center
   that closes back to home, and NO header/nav/footer chrome (that chrome only
   belongs to the home page itself). This layout reproduces that same visual
-  structure as a real, standalone page instead of an AJAX fragment: `.close-
-  page` is a normal link back to "/", which transitions.ts already intercepts
-  like any other internal link to do the curtain wipe + real navigation.
+  structure: `.close-page` is a normal <a href="/"> link, which Astro's
+  client router (see astro:transitions in BaseHead.astro) intercepts to swap
+  pages without a real browser reload, while transitions.ts plays the
+  curtain wipe on top so it still feels like a real transition.
 -->
 <!DOCTYPE html>
 <html
@@ -32,6 +38,9 @@ const { title = 'Aurameow', description = 'Aurameow resume', pageTitle } = Astro
   </head>
 
   <body>
+    {/* The floating "X" button, fixed to the top-center of the screen via
+        CSS (see main.css's .close-page rules) — clicking it just navigates
+        home like any other link. */}
     <a href="/" class="close-page">
       <span class="close-text"></span>
     </a>
@@ -44,6 +53,10 @@ const { title = 'Aurameow', description = 'Aurameow resume', pageTitle } = Astro
           </header>
 
           <div class="entry-content">
+            {/* <slot /> is where the *calling* page's own content gets
+                inserted. e.g. about.astro writes
+                  <PageLayout pageTitle="About Me"> ...its content... </PageLayout>
+                and that "...its content..." is exactly what renders here. */}
             <slot />
           </div>
         </article>
@@ -52,6 +65,12 @@ const { title = 'Aurameow', description = 'Aurameow resume', pageTitle } = Astro
 
     <!-- ALERT : used for contact form mail delivery alert -->
     <div class="site-alert animated"></div>
+
+    <!-- Background music element, invisible here (no toggle UI on inner
+         pages, matching the original site). transition:persist keeps this
+         exact node (and its playback) alive across client-side navigations,
+         so music started on the home page just keeps playing. -->
+    <audio id="bg-music" loop src="/audio/music2.mp3" transition:persist="bg-music"></audio>
 
     <Curtain />
 

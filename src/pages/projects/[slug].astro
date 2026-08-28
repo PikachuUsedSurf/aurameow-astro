@@ -1,10 +1,20 @@
 ---
+// This file's name — [slug].astro, with square brackets — is Astro's
+// syntax for a "dynamic route": one file that generates MANY pages, one
+// per project post, instead of writing about.astro-style files by hand
+// for each one. `slug` becomes a URL parameter you can read below.
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import PageLayout from '../../layouts/PageLayout.astro';
 
 const WORDS_PER_MINUTE = 200;
 
+// Astro calls this function once, at build time, to ask "which pages
+// should exist, and what data does each one need?" Returning one object
+// per post — `params.slug` becomes that post's URL (e.g. slug:
+// "hello-projects" → the page /projects/hello-projects), and whatever's in
+// `props` gets handed to this same file as `Astro.props` below, for that
+// specific page.
 export async function getStaticPaths() {
   const entries = await getCollection('projects', ({ data }) => !data.draft);
   return entries.map((entry) => ({
@@ -13,8 +23,15 @@ export async function getStaticPaths() {
   }));
 }
 
+// This runs separately for EACH page getStaticPaths described above — so
+// on the /projects/hello-projects page, `entry` is that one post; on
+// /projects/tmx-socials-generator, it's that one instead.
 const { entry } = Astro.props;
 const { title, excerpt, category, pubDate, cover, coverAlt, repoUrl } = entry.data;
+// entry.render() turns the post's markdown body into an actual Astro
+// component you can drop into the page — `<Content />` below is literally
+// the rendered HTML of everything written after the frontmatter in that
+// post's .md file.
 const { Content } = await entry.render();
 
 const readTime = Math.max(1, Math.round(entry.body.trim().split(/\s+/).length / WORDS_PER_MINUTE));
@@ -37,6 +54,11 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
   <p class="project-excerpt">{excerpt}</p>
 
   {
+    // `repoUrl && (...)` is a shortcut for "only render this if repoUrl has
+    // a value". JavaScript's && stops and returns the left side as soon as
+    // it's falsy (like undefined) — so when a post has no repoUrl, this
+    // whole block evaluates to `undefined` and Astro simply renders
+    // nothing, no explicit if/else needed.
     repoUrl && (
       <p class="project-repo-link">
         <a href={repoUrl} target="_blank" rel="noopener noreferrer">
