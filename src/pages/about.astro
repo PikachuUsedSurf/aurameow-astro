@@ -104,20 +104,39 @@ const funFacts = [
     <h2><i>Proud to work with</i></h2>
   </div>
 
-  <div class="row">
-    {clientLogos.map((logo) => (
-      <div class="col-xs-6 col-sm-3">
-        <div class="client">
+  {/* An infinite scrolling marquee instead of a static grid. The trick:
+      render the logo list TWICE back to back, then animate the whole
+      track exactly 50% to the left, in a continuous loop. Since the
+      second half is an identical copy of the first, the instant it loops
+      back to 0% it looks exactly like the moment before — the seam is
+      invisible. `clientLogos` itself still only lists the real 8 logos;
+      the duplication only happens here, at render time.
+
+      The second copy is marked aria-hidden (screen readers shouldn't
+      announce the same 8 logos twice) and gets a "duplicate" class so the
+      reduced-motion fallback below can hide it and show a plain, single
+      row instead. */}
+  <div class="marquee">
+    <div class="marquee-track">
+      {clientLogos.map((logo) => (
+        <div class="client marquee-item">
           <a href="#">
             <img src={`/images/site/${logo}`} alt="client" />
           </a>
         </div>
-      </div>
-    ))}
+      ))}
+      {clientLogos.map((logo) => (
+        <div class="client marquee-item marquee-duplicate" aria-hidden="true">
+          <a href="#" tabindex="-1">
+            <img src={`/images/site/${logo}`} alt="" />
+          </a>
+        </div>
+      ))}
+    </div>
   </div>
   <!-- CLIENTS -->
 
-  <!-- FUN FACT -->
+  <!-- FUN FACT 
   <div class="section-title center">
     <h2><i>fun fact</i></h2>
   </div>
@@ -132,5 +151,57 @@ const funFacts = [
       </div>
     ))}
   </div>
-  <!-- FUN FACT -->
+   FUN FACT -->
 </PageLayout>
+
+<style>
+  .marquee {
+    /* Hides the duplicated second half sitting off to the right, and
+       fades the edges so logos don't look like they're cut off mid-box. */
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content; /* let the track be exactly as wide as its (doubled) content */
+    animation: marquee-scroll 24s linear infinite;
+  }
+
+  /* Pausing on hover makes each logo's link actually clickable/readable
+     instead of only ever whizzing past. */
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+
+  .marquee-item {
+    flex: 0 0 220px; /* fixed width per logo box, instead of the grid's percentage columns */
+    margin: 0 4px;
+  }
+
+  @keyframes marquee-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      /* Exactly half the track's width, since the track is two identical
+         copies of the logo list back to back — this is what makes the
+         loop seamless instead of snapping back to the start. */
+      transform: translateX(-50%);
+    }
+  }
+
+  /* Respect users who've asked their OS to reduce motion: show the logos
+     as a plain static row instead of forcing the animation on them. */
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+    .marquee-duplicate {
+      display: none;
+    }
+  }
+</style>
