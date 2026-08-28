@@ -1,0 +1,119 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+
+const services = [
+  { icon: 'service-01.svg', title: 'Web Designer', text: 'I design super cool websites. It is a long established fact that a reader will be distracted by the readable content.' },
+  { icon: 'service-02.svg', title: 'Game Dev', text: 'I can design beautiful type faces for both digital and print media. It is a long established fact that a reader will be distracted.' },
+  { icon: 'service-03.svg', title: 'Video', text: 'I write about web design. It is a long established fact that a reader will be distracted by the readable content.' },
+  { icon: 'service-04.svg', title: 'Problem Solver', text: 'I have strong project management skills. It is a long established fact that a reader will be distracted by the readable content.' },
+];
+
+const process = [
+  { icon: 'process-01.svg', title: 'Research' },
+  { icon: 'process-02.svg', title: 'IDEA' },
+  { icon: 'process-03.svg', title: 'DESIGN' },
+  { icon: 'process-04.svg', title: 'DEVELOP' },
+  { icon: 'process-05.svg', title: 'TEST' },
+  { icon: 'process-06.svg', title: 'LAUNCH' },
+];
+
+// Same 7 files as the live site, with client-01 repeated for the 8th slot
+// (that's how it's ordered in production).
+const clientLogos = [
+  'client-01.png', 'client-02.png', 'client-03.png', 'client-04.png',
+  'client-05.png', 'client-06.png', 'client-07.png', 'client-01.png',
+];
+
+const funFacts = [
+  { icon: 'fun-01.svg', title: '18 Projects Completed' },
+  { icon: 'fun-02.svg', title: '35 Git repositories' },
+];
+---
+
+<PageLayout title="Aurameow" pageTitle="About Me">
+  <div class="boxed is-dark">
+    <div class="row">
+      <div class="col-sm-3">
+        <img src="/images/site/about.jpg" alt="about image" />
+      </div>
+
+      <div class="col-sm-9">
+        <h2 class="fw-300">
+          Hello, I am Nana yaw, a <strong>software engineer</strong> based in Dar es salaam, Tanzania.
+          I can design and build beautiful <strong>website</strong> and <strong>user interfaces</strong>
+          I'm passionate about creating websites that are both visually appealing and functional.
+        </h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <div class="section-title center">
+    <h2><i>services</i></h2>
+  </div>
+
+  <div class="row">
+    {services.map((s) => (
+      <div class="col-sm-6 col-lg-3">
+        <div class="service">
+          <img src={`/images/site/${s.icon}`} alt="image" />
+          <h3>{s.title}</h3>
+          <p>{s.text}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+  <!-- SERVICES -->
+
+  <!-- PROCESS -->
+  <div class="section-title center">
+    <h2><i>work procces</i></h2>
+  </div>
+
+  <div class="row">
+    {process.map((p) => (
+      <div class="col-xs-4 col-sm-2">
+        <div class="process">
+          <img src={`/images/site/${p.icon}`} alt="image" />
+          <h4>{p.title}</h4>
+        </div>
+      </div>
+    ))}
+  </div>
+  <!-- PROCESS -->
+
+  <!-- CLIENTS -->
+  <div class="section-title center">
+    <h2><i>Proud to work with</i></h2>
+  </div>
+
+  <div class="row">
+    {clientLogos.map((logo) => (
+      <div class="col-xs-6 col-sm-3">
+        <div class="client">
+          <a href="#">
+            <img src={`/images/site/${logo}`} alt="client" />
+          </a>
+        </div>
+      </div>
+    ))}
+  </div>
+  <!-- CLIENTS -->
+
+  <!-- FUN FACT -->
+  <div class="section-title center">
+    <h2><i>fun fact</i></h2>
+  </div>
+
+  <div class="row">
+    {funFacts.map((f) => (
+      <div class="col-xs-6 col-sm-3">
+        <div class="fun-fact">
+          <img src={`/images/site/${f.icon}`} alt="fun fact" />
+          <h4>{f.title}</h4>
+        </div>
+      </div>
+    ))}
+  </div>
+  <!-- FUN FACT -->
+</PageLayout>

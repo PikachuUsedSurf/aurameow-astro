@@ -1,0 +1,164 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import PageLayout from '../../layouts/PageLayout.astro';
+
+const WORDS_PER_MINUTE = 200;
+
+export async function getStaticPaths() {
+  const entries = await getCollection('projects', ({ data }) => !data.draft);
+  return entries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { title, excerpt, category, pubDate, cover, coverAlt, repoUrl } = entry.data;
+const { Content } = await entry.render();
+
+const readTime = Math.max(1, Math.round(entry.body.trim().split(/\s+/).length / WORDS_PER_MINUTE));
+const formattedDate = pubDate.toLocaleDateString('en-US', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+});
+---
+
+<PageLayout title={`${title} — Aurameow`} description={excerpt} pageTitle={title}>
+  <p class="project-meta">
+    <span class="project-category">{category}</span>
+    <span aria-hidden="true">·</span>
+    <span>{formattedDate}</span>
+    <span aria-hidden="true">·</span>
+    <span>{readTime} min read</span>
+  </p>
+
+  <p class="project-excerpt">{excerpt}</p>
+
+  {
+    repoUrl && (
+      <p class="project-repo-link">
+        <a href={repoUrl} target="_blank" rel="noopener noreferrer">
+          View source on GitHub <span aria-hidden="true">&rarr;</span>
+        </a>
+      </p>
+    )
+  }
+
+  {
+    cover && (
+      <div class="project-cover">
+        <Image src={cover} alt={coverAlt ?? ''} width={1180} height={620} />
+      </div>
+    )
+  }
+
+  <div class="project-body">
+    <Content />
+  </div>
+
+  <p class="project-back"><a href="/projects">&larr; Back to all projects</a></p>
+</PageLayout>
+
+<style>
+  .project-meta {
+    margin: 0 0 1em;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #999;
+    display: flex;
+    gap: 0.5em;
+    justify-content: center;
+  }
+  .project-category {
+    color: #1851f1;
+  }
+
+  .project-excerpt {
+    max-width: 42em;
+    margin: 0 auto 2em;
+    text-align: center;
+    font-size: calc(15px + 0.2vw);
+    color: #555;
+  }
+
+  .project-repo-link {
+    text-align: center;
+    margin: 0 0 2em;
+  }
+  .project-repo-link a {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .project-repo-link a:hover {
+    color: #1851f1;
+  }
+
+  .project-cover {
+    margin: 0 0 2em;
+    background: #000;
+  }
+  .project-cover img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .project-body {
+    max-width: 42em;
+    margin: 0 auto;
+  }
+  .project-body :global(a) {
+    color: #1851f1;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .project-body :global(a:hover) {
+    color: #111;
+  }
+  .project-body :global(ul),
+  .project-body :global(ol) {
+    margin: 0 0 1.4em;
+    padding-left: 1.4em;
+  }
+  .project-body :global(li) {
+    margin: 0.3em 0;
+  }
+  .project-body :global(pre) {
+    padding: 1.2em;
+    background: #111;
+    color: #eee;
+    overflow-x: auto;
+    font-size: 13px;
+    border-radius: 2px;
+  }
+  .project-body :global(code) {
+    font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;
+    font-size: 0.9em;
+  }
+  .project-body :global(p code) {
+    background: #f1f1f1;
+    padding: 0.15em 0.4em;
+  }
+
+  .project-back {
+    text-align: center;
+    margin-top: 3em;
+  }
+  .project-back a {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .project-back a:hover {
+    color: #1851f1;
+  }
+</style>

@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+const WORDS_PER_MINUTE = 200;
+
+const allEntries = await getCollection('projects', ({ data }) => !data.draft);
+const entries = allEntries.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const readTimes = new Map(
+  entries.map((entry) => [
+    entry.slug,
+    Math.max(1, Math.round(entry.body.trim().split(/\s+/).length / WORDS_PER_MINUTE)),
+  ]),
+);
+---
+
+<PageLayout title="Projects — Aurameow" description="Project write-ups and notes." pageTitle="Projects">
+  <p class="projects-intro">
+    Write-ups from things I've built, and shorter notes along the way —
+    newest first.
+  </p>
+
+  {
+    entries.length === 0 ? (
+      <p>Nothing published yet — check back soon.</p>
+    ) : (
+      <div class="projects-grid">
+        {entries.map((entry) => (
+          <ProjectCard entry={entry} readTime={readTimes.get(entry.slug)!} />
+        ))}
+      </div>
+    )
+  }
+</PageLayout>
+
+<style>
+  .projects-intro {
+    max-width: 46em;
+    margin: 0 0 2.4em;
+    font-size: calc(15px + 0.2vw);
+    color: #555;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px;
+  }
+  .projects-grid > :global(.project-card) {
+    border: 1px solid #111;
+  }
+
+  @media (max-width: 767px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,40 @@
+{/*
+  The black/blue page-transition curtain from the original one-page-layout
+  AJAX system. Reuses the .overlay / .overlay-1 / .overlay-2 rules already
+  defined in main.css (color, position, base transition) — this component
+  only adds the cover/reveal state classes that drive them.
+
+  Every page starts "covered" (rendered server-side, so there's no flash of
+  uncovered content before JS runs), then wipes away shortly after load.
+  transitions.ts intercepts internal link clicks to wipe back in before
+  navigating to the next page, so every navigation gets the same wipe
+  in/out feel the original AJAX router had — just across real page loads
+  instead of injected fragments.
+*/}
+<div class="curtain curtain-cover curtain-instant">
+  <div class="overlay overlay-1"></div>
+  <div class="overlay overlay-2"></div>
+</div>
+
+<style>
+  .curtain-cover .overlay-1 {
+    transform: translateY(0%);
+    transition-delay: 0s;
+  }
+  .curtain-cover .overlay-2 {
+    transform: translateY(0%);
+    transition-delay: 0.15s;
+  }
+  .curtain-reveal .overlay-1 {
+    transform: translateY(100%);
+    transition-delay: 0.15s;
+  }
+  .curtain-reveal .overlay-2 {
+    transform: translateY(100%);
+    transition-delay: 0s;
+  }
+  .curtain-instant .overlay {
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+</style>

@@ -1,0 +1,81 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+---
+
+<PageLayout title="Aurameow" pageTitle="Contact">
+  <div class="boxed">
+    <div class="row">
+      <div class="col-xs-6 col-sm-3">
+        <div class="fun-fact">
+          <img src="/images/site/icon-location.svg" alt="image" />
+          <h4>based in Dar es salaam, TANZANIA</h4>
+        </div>
+      </div>
+
+      <div class="col-xs-6 col-sm-3">
+        <div class="fun-fact">
+          <img src="/images/site/icon-phone.svg" alt="image" />
+          <h4>Tel : +255 745 896 098</h4>
+        </div>
+      </div>
+
+      <div class="col-xs-6 col-sm-3">
+        <div class="fun-fact">
+          <img src="/images/site/icon-mail.svg" alt="image" />
+          <h4>nanayaw @ skiff.com</h4>
+        </div>
+      </div>
+
+      <div class="col-xs-6 col-sm-3">
+        <div class="fun-fact">
+          <img src="/images/site/icon-check.svg" alt="image" />
+          <h4>Freelance Available</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title center">
+    <h2><i>Drop Me A Line</i></h2>
+  </div>
+
+  <h2 class="center fw-300">
+    Find out if I'm <strong>available</strong> and <br />
+    ask me anything
+  </h2>
+
+  <div class="contact-form">
+    <form id="contact-form" class="validate-form" method="post">
+      <!--
+        Powered by Web3Forms (https://web3forms.com) — free, no backend needed.
+        Sign up and replace YOUR_WEB3FORMS_ACCESS_KEY below with your real access key.
+      -->
+      <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY" />
+      <input type="hidden" name="subject" value="You have a new message from your resume site!" />
+      <input type="hidden" name="from_name" value="Aurameow site" />
+
+      <p>
+        <input placeholder="Name" type="text" name="name" id="name" class="required" />
+      </p>
+
+      <p>
+        <input placeholder="Email" type="text" name="email" id="email" class="required email" />
+      </p>
+
+      <p class="antispam">
+        Leave this empty if you are a human :
+        <br /><input name="url" />
+      </p>
+
+      <p>
+        <textarea placeholder="Message" name="message" id="message" class="required"></textarea>
+      </p>
+
+      <p>
+        <button class="submit button primary" type="submit">Send</button>
+      </p>
+    </form>
+  </div>
+
+  <script src="../scripts/contact.ts"></script>
+</PageLayout>

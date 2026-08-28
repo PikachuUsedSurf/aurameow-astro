@@ -1,0 +1,35 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Aurameow',
+  description = 'Aurameow resume',
+} = Astro.props;
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content={description} />
+<meta name="keywords" content="nanayaw, aurameow, portfolio" />
+<meta name="author" content="Aurameow" />
+<meta name="theme-color" content="#1755cf" />
+
+<title>{title}</title>
+
+<!-- FAV and TOUCH ICONS -->
+<link rel="shortcut icon" href="/images/ico/favicon.ico" />
+<link rel="apple-touch-icon" href="/images/ico/apple-touch-icon.png" />
+
+<!-- FONTS -->
+<link rel="stylesheet" href="/css/fonts/jost/jost.css" />
+<link href="https://fonts.googleapis.com/css?family=Anton" rel="stylesheet" />
+
+<!-- STYLES -->
+<link rel="stylesheet" type="text/css" href="/css/normalize.css" />
+<link rel="stylesheet" type="text/css" href="/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="/css/fonts/fontello/css/fontello.css" />
+<link rel="stylesheet" type="text/css" href="/css/main.css" />
+<link rel="stylesheet" type="text/css" href="/css/768.css" />

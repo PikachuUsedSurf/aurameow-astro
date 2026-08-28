@@ -1,0 +1,62 @@
+---
+import BaseHead from './BaseHead.astro';
+import Curtain from '../components/Curtain.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  pageTitle: string;
+}
+
+const { title = 'Aurameow', description = 'Aurameow resume', pageTitle } = Astro.props;
+---
+
+<!--
+  Inner pages (About/Resume/Contact/404) on the live site are rendered as an
+  AJAX-injected `.one-page-content` overlay on top of the home page — full
+  white background, a floating black "X" (`.close-page`) fixed at top-center
+  that closes back to home, and NO header/nav/footer chrome (that chrome only
+  belongs to the home page itself). This layout reproduces that same visual
+  structure as a real, standalone page instead of an AJAX fragment: `.close-
+  page` is a normal link back to "/", which transitions.ts already intercepts
+  like any other internal link to do the curtain wipe + real navigation.
+-->
+<!DOCTYPE html>
+<html
+  lang="en"
+  class="no-js"
+  data-click-ripple-animation="yes"
+>
+  <head>
+    <BaseHead title={title} description={description} />
+  </head>
+
+  <body>
+    <a href="/" class="close-page">
+      <span class="close-text"></span>
+    </a>
+
+    <div class="one-page-content is-visible">
+      <div class="content-wrap">
+        <article class="page hentry">
+          <header class="entry-header">
+            <h1 class="entry-title">{pageTitle}</h1>
+          </header>
+
+          <div class="entry-content">
+            <slot />
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- ALERT : used for contact form mail delivery alert -->
+    <div class="site-alert animated"></div>
+
+    <Curtain />
+
+    <!-- SCRIPTS -->
+    <script src="../scripts/main.ts"></script>
+    <script src="../scripts/transitions.ts"></script>
+  </body>
+</html>

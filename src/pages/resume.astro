@@ -1,0 +1,127 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+
+const designSkills = [
+  { name: 'Sketch', percent: 60 },
+  { name: 'Adobe photoshop', percent: 80 },
+  { name: 'Figma', percent: 75 },
+  { name: 'Adobe XD', percent: 90 },
+];
+
+const codingSkills = [
+  { name: 'Typescript', percent: 70 },
+  { name: 'Database', percent: 60 },
+  { name: 'Laravel', percent: 80 },
+  { name: 'Python', percent: 70 },
+];
+---
+
+<PageLayout title="Aurameow" pageTitle="Resume">
+  <div class="row">
+    <!-- col -->
+    <div class="col-sm-6 col-lg-7">
+      <div class="event">
+        <h2>WORK HISTORY</h2>
+        <p><i class="pw-icon-badge"></i></p>
+      </div>
+
+      <div class="event">
+        <h3>Sep 2022 - Current</h3>
+        <h4>Full Stack Web Developer</h4>
+        <h5>TMX</h5>
+        <p>
+          As a Junior Software Engineer at TMX, I actively participated in the development
+          and enhancement of software solutions. Collaborating closely with a cross-functional
+          team of engineers and designers, I contributed to all phases of the software development
+          lifecycle, from design and implementation to testing and deployment. My role allowed me
+          to leverage my strong programming skills and enthusiasm for technology to deliver
+          high-quality code and innovative solutions.
+        </p>
+      </div>
+
+      <div class="event">
+        <h2>EDUCATION</h2>
+        <p><i class="pw-icon-education"></i></p>
+      </div>
+
+      <div class="event">
+        <h3>2022</h3>
+        <h4>Bachelor of Science in Software Engineering</h4>
+        <h5>Shanghai Dianji University</h5>
+        <p>
+          Completed a comprehensive curriculum focused on computer science fundamentals,
+          including hands-on experience in designing and developing software applications.
+          Developed a strong understanding of programming languages, data structures,
+          and algorithms. Participated in group projects to enhance teamwork and
+          problem-solving skills.
+        </p>
+      </div>
+
+      <div class="event">
+        <h3>2012</h3>
+        <h4>Middle School Diploma</h4>
+        <h5>Biralee International</h5>
+        <p>
+          Successfully completed the middle school curriculum, demonstrating a strong commitment
+          to academic excellence and active participation in extracurricular activities.
+        </p>
+      </div>
+
+      <p>
+        <a href="#" class="button primary"><i class="pw-icon-doc-alt"></i>Download Cover Letter</a>
+      </p>
+    </div>
+    <!-- col -->
+
+    <!-- col -->
+    <div class="col-sm-6 col-lg-5">
+      <div class="section-title center">
+        <h2><i>Design Skills</i></h2>
+      </div>
+
+      {designSkills.map((s) => (
+        <div class="skill-unit">
+          <h4>{s.name}</h4>
+          <div class="bar" data-percent={s.percent}>
+            <div class="progress" style={`width:${s.percent}%`}>
+              <span>{s.percent}</span>
+            </div>
+          </div>
+        </div>
+      ))}
+
+      <div class="section-title center">
+        <h2><i>Coding Skills</i></h2>
+      </div>
+
+      {codingSkills.map((s) => (
+        <div class="skill-unit">
+          <h4>{s.name}</h4>
+          <div class="bar" data-percent={s.percent}>
+            <div class="progress" style={`width:${s.percent}%`}>
+              <span>{s.percent}</span>
+            </div>
+          </div>
+        </div>
+      ))}
+
+      <div class="section-title center">
+        <h2><i>TESTIMONIALS</i></h2>
+      </div>
+
+      <div class="testo">
+        <img src="/images/site/testo-01.jpg" alt="Goodluck Luhanjo" />
+        <h3>Goodluck Luhanjo</h3>
+        <h5>ICTO / TMX plc.</h5>
+        <p>
+          I had the pleasure of working with Nana as a mentor during his internship at TMX.
+          He is a quick learner and eager to take on new challenges.
+          He's also a team player and always willing to help out his colleagues.
+          I am confident that he has the skills and attitude to be a successful
+          software developer.
+        </p>
+      </div>
+    </div>
+    <!-- col -->
+  </div>
+</PageLayout>
