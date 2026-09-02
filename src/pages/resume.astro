@@ -30,16 +30,36 @@ const codingSkills = [
 
       <div class="event">
         <h3>Sep 2022 - Current</h3>
-        <h4>Full Stack Web Developer</h4>
-        <h5>TMX</h5>
-        <p>
-          As a Junior Software Engineer at TMX, I actively participated in the development
-          and enhancement of software solutions. Collaborating closely with a cross-functional
-          team of engineers and designers, I contributed to all phases of the software development
-          lifecycle, from design and implementation to testing and deployment. My role allowed me
-          to leverage my strong programming skills and enthusiasm for technology to deliver
-          high-quality code and innovative solutions.
-        </p>
+        <h4>Full Stack Developer (Intern)</h4>
+        <h5>Tanzania Mercantile Exchange (TMX)</h5>
+        <ul>
+          <li>
+            Re-engineered the original OTS pilot into a modular, service-oriented platform
+            covering the full trading lifecycle — warehouse receipt intake, catalogue and
+            auction management, live bidding, and clearing and settlement.
+          </li>
+          <li>
+            Built responsive, secure interfaces and back-end services for pre-trade, trade,
+            and post-trade workflows using React with a PostgreSQL data layer.
+          </li>
+          <li>
+            Implemented real-time bidding dashboards and trade session updates over
+            WebSockets for high-traffic sessions.
+          </li>
+          <li>
+            Developed REST APIs integrating with banks, mobile-money services, and government
+            platforms (GePG, the Warehouse Receipt Registry) via the Government Enterprise
+            Service Bus (GOVESB).
+          </li>
+          <li>
+            Enforced application security through JWT authentication, role-based access
+            control, and immutable audit logging of trades and settlements.
+          </li>
+          <li>
+            Managed deployment, servers, and network security, including hosting at the
+            e-Government Authority (e-GA).
+          </li>
+        </ul>
       </div>
 
       <div class="event">
@@ -48,30 +68,21 @@ const codingSkills = [
       </div>
 
       <div class="event">
-        <h3>2022</h3>
-        <h4>Bachelor of Science in Software Engineering</h4>
-        <h5>Shanghai Dianji University</h5>
-        <p>
-          Completed a comprehensive curriculum focused on computer science fundamentals,
-          including hands-on experience in designing and developing software applications.
-          Developed a strong understanding of programming languages, data structures,
-          and algorithms. Participated in group projects to enhance teamwork and
-          problem-solving skills.
-        </p>
+        <h3>2017 - 2022</h3>
+        <h4>Bachelor of Software Engineering</h4>
+        <h5>Shanghai Dianji University, Shanghai, China</h5>
       </div>
 
       <div class="event">
-        <h3>2012</h3>
+        <h3>2012 - 2016</h3>
         <h4>Middle School Diploma</h4>
-        <h5>Biralee International</h5>
-        <p>
-          Successfully completed the middle school curriculum, demonstrating a strong commitment
-          to academic excellence and active participation in extracurricular activities.
-        </p>
+        <h5>Biralee International School, Trondheim, Norway</h5>
       </div>
 
       <p>
-        <a href="#" class="button primary"><i class="pw-icon-doc-alt"></i>Download Cover Letter</a>
+        <a href="/files/nanayaw-osafokissi-cv.pdf" download class="button primary">
+          <i class="pw-icon-doc-alt"></i>Download CV
+        </a>
       </p>
     </div>
     <!-- col -->
@@ -79,7 +90,7 @@ const codingSkills = [
     <!-- col -->
     <div class="col-sm-6 col-lg-5">
       <div class="section-title center">
-        <h2><i>Design Skills</i></h2>
+        <h2><i>Systems &amp; Security</i></h2>
       </div>
 
       {/* The skill bar's fill width is set directly from `s.percent` right
@@ -87,7 +98,7 @@ const codingSkills = [
           built — not filled in later by JavaScript. That means the bars
           show at the right width immediately, even before any script has
           run, and still work if JS is disabled entirely. */}
-      {designSkills.map((s) => (
+      {systemsSkills.map((s) => (
         <div class="skill-unit">
           <h4>{s.name}</h4>
           <div class="bar" data-percent={s.percent}>
@@ -99,7 +110,7 @@ const codingSkills = [
       ))}
 
       <div class="section-title center">
-        <h2><i>Coding Skills</i></h2>
+        <h2><i>Dev Skills</i></h2>
       </div>
 
       {codingSkills.map((s) => (
@@ -120,7 +131,7 @@ const codingSkills = [
       <div class="testo">
         <img src="/images/site/testo-01.jpg" alt="Goodluck Luhanjo" />
         <h3>Goodluck Luhanjo</h3>
-        <h5>ICTO / TMX plc.</h5>
+        <h5>System Administrator, TMX</h5>
         <p>
           I had the pleasure of working with Nana as a mentor during his internship at TMX.
           He is a quick learner and eager to take on new challenges.
@@ -133,3 +144,18 @@ const codingSkills = [
     <!-- col -->
   </div>
 </PageLayout>
+
+<style>
+  /* .event p (main.css) styles the timeline's description text, but this
+     job entry uses a bullet list instead of a paragraph — these rules
+     just carry that same spacing/sizing over to the <ul>/<li> here. */
+  .event ul {
+    margin: 0.6em 0 0.2em 0;
+    padding-left: 1.1em;
+    font-size: 0.95em;
+    letter-spacing: 0.3px;
+  }
+  .event li {
+    margin: 0.5em 0;
+  }
+</style>
